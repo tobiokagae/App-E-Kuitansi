@@ -1,0 +1,6 @@
+sqlalchemy
+flask
+flask_sqlalchemy
+pymysql
+PyJWT
+fpdf
