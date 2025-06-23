@@ -1,13 +1,19 @@
 from flask import Blueprint, request, jsonify, send_file
 from model.models import db, Kuitansi, User, RoleEnum
 from datetime import datetime
-from fpdf import FPDF
 from io import BytesIO
-from math import cos, sin, radians
 import jwt
 import os
 from functools import wraps
 import logging
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.colors import Color
+from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import os
 
 # Blueprint configuration
 kuitansi_bp = Blueprint('kuitansi_bp', __name__)
@@ -389,93 +395,56 @@ def cetak_pdf_kuitansi(current_user, id_kuitansi):
                 "message": "Anda tidak memiliki izin untuk mencetak kuitansi ini"
             }), 403
 
-        # Create PDF with better formatting
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_auto_page_break(auto=True, margin=15)
-        pdf.set_margins(15, 15, 15)
+        # Create PDF buffer
+        buffer = BytesIO()
+        
+        # Create PDF canvas
+        pdf = canvas.Canvas(buffer, pagesize=A4)
+        width, height = A4
 
-        # Add logo if exists
-        logo_path = "logo_indibiz.png"
+        # Add watermark logos (diagonal pattern, full page)
+        logo_path = "logo_telkom.png"
         if os.path.exists(logo_path):
-            pdf.image(logo_path, x=15, y=15, w=35, h=25)
+            try:
+                pdf.saveState()
+                pdf.setFillAlpha(0.1) # 10% opacity for watermark
+                pdf.rotate(45) # Rotate 45 degrees for diagonal pattern
+                
+                # Adjust logo size and spacing to fill the entire page with large logos
+                logo_size = 150  
+                spacing_x = 170  
+                spacing_y = 170  
 
-        # Company header with better spacing
-        pdf.set_y(20)
-        pdf.set_x(60)
-        pdf.set_font("Arial", 'B', 18)
-        pdf.set_text_color(0, 100, 150)  # Corporate blue
-        pdf.cell(0, 10, "PT. TELKOM INDONESIA", ln=True, align='L')
-        
-        pdf.set_x(60)
-        pdf.set_font("Arial", '', 12)
-        pdf.set_text_color(80, 80, 80)  # Dark gray
-        pdf.cell(0, 6, "Jl. Telekomunikasi No. 1, Bandung 40257", ln=True, align='L')
-        
-        pdf.set_x(60)
-        pdf.cell(0, 6, "Telp: (022) 1234567 | Fax: (022) 1234568", ln=True, align='L')
-        
-        pdf.set_x(60)
-        pdf.cell(0, 6, "Email: info@telkom.co.id | www.telkom.co.id", ln=True, align='L')
-        
-        pdf.ln(10)
+                # Adjust start and end points to ensure full page coverage when rotated
+                start_x = -width
+                start_y = -height
+                end_x = 2 * width
+                end_y = 2 * height
+                
+                # Loop to create a grid of diagonal logos across the entire page
+                y = start_y
+                while y < end_y:
+                    x = start_x
+                    while x < end_x:
+                        try:
+                            pdf.drawImage(logo_path, x, y, 
+                                          width=logo_size, height=logo_size, 
+                                          mask='auto', preserveAspectRatio=True)
+                        except Exception as img_e:
+                            logger.error(f"Error drawing image at ({x}, {y}) with size {logo_size}: {img_e}")
+                            pass 
+                        x += spacing_x
+                    y += spacing_y
+                
+                pdf.restoreState() # Reset transparency and rotation
+            except Exception as e:
+                logger.error(f"Failed to apply watermark: {e}")
+                pass # If logo fails, proceed without watermark
 
-        # Decorative separator line
-        pdf.set_draw_color(0, 100, 150)
-        pdf.set_line_width(1.5)
-        pdf.line(15, pdf.get_y(), 195, pdf.get_y())
-        pdf.set_line_width(0.5)
-        pdf.line(15, pdf.get_y() + 2, 195, pdf.get_y() + 2)
-        pdf.ln(8)
+        # Helper functions
+        def format_currency(amount):
+            return f"Rp {int(amount):,}".replace(',', '.')
 
-        # Title with background
-        pdf.set_font("Arial", 'B', 16)
-        pdf.set_text_color(255, 255, 255)  # White text
-        pdf.set_fill_color(0, 100, 150)    # Blue background
-        pdf.cell(0, 12, "KUITANSI PEMBAYARAN", ln=True, align='C', fill=True)
-        pdf.set_text_color(0, 0, 0)  # Reset to black
-        pdf.ln(8)
-
-        # Receipt number in a box
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_draw_color(0, 100, 150)
-        pdf.rect(15, pdf.get_y(), 180, 10)
-        pdf.set_x(20)
-        pdf.cell(0, 10, f"No. Kuitansi: {kuitansi.nomor_kuitansi}", ln=True, align='L')
-        pdf.ln(8)
-
-        # Helper function for label-value pairs with better formatting
-        def add_label_value(label, value, is_amount=False):
-            current_y = pdf.get_y()
-            
-            # Label column
-            pdf.set_font("Arial", 'B', 11)
-            pdf.set_text_color(60, 60, 60)
-            pdf.set_xy(20, current_y)
-            pdf.cell(50, 8, label, 0, 0, 'L')
-            
-            # Colon
-            pdf.set_font("Arial", '', 11)
-            pdf.cell(5, 8, ":", 0, 0, 'L')
-            
-            # Value column with special formatting for amount
-            if is_amount:
-                pdf.set_font("Arial", 'B', 12)
-                pdf.set_text_color(200, 0, 0)  # Red for amount
-            else:
-                pdf.set_font("Arial", '', 11)
-                pdf.set_text_color(0, 0, 0)
-            
-            # Handle long text wrapping
-            if len(str(value)) > 80:
-                pdf.set_xy(75, current_y)
-                pdf.multi_cell(115, 8, str(value), 0, 'L')
-                pdf.ln(2)
-            else:
-                pdf.cell(0, 8, str(value), 0, 1, 'L')
-                pdf.ln(3)
-
-        # Format date in Indonesian
         def format_date_indonesian(date_obj):
             months = [
                 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -483,108 +452,178 @@ def cetak_pdf_kuitansi(current_user, id_kuitansi):
             ]
             return f"{date_obj.day} {months[date_obj.month - 1]} {date_obj.year}"
 
-        # Format currency
-        def format_currency(amount):
-            return f"Rp {int(amount):,}".replace(',', '.')
+        # Current position tracker - start higher for title
+        y_pos = height - 80
 
-        # Receipt content with better formatting
-        add_label_value("Telah Diterima Dari", kuitansi.nama)
-        add_label_value("Tanggal Pembayaran", format_date_indonesian(kuitansi.tanggal))
-        add_label_value("Jumlah Pembayaran", format_currency(kuitansi.jumlah), is_amount=True)
-        add_label_value("Terbilang", f"{kuitansi.terbilang} Rupiah")
-        add_label_value("Untuk Pembayaran", kuitansi.deskripsi)
-
-        # Amount highlight box
-        pdf.ln(5)
-        pdf.set_font("Arial", 'B', 14)
-        pdf.set_fill_color(240, 240, 240)
-        pdf.set_draw_color(150, 150, 150)
-        pdf.rect(15, pdf.get_y(), 180, 15)
-        pdf.set_xy(20, pdf.get_y() + 3)
-        pdf.cell(0, 10, f"TOTAL PEMBAYARAN: {format_currency(kuitansi.jumlah)}", 0, 1, 'C')
-        pdf.ln(10)
-
-        # Print information section
-        pdf.set_font("Arial", 'I', 10)
-        pdf.set_text_color(100, 100, 100)
-        pdf.ln(5)
+        # Title with blue background (matching image style)
+        pdf.setFillColor(Color(0.2, 0.4, 0.6))  # Blue color
+        pdf.rect(40, y_pos - 25, width - 80, 35, fill=True, stroke=False)
         
-        # Format current datetime in Indonesian
+        # Title text in white
+        pdf.setFillColor(Color(1, 1, 1))  # White text
+        pdf.setFont("Helvetica-Bold", 14)
+        text = "KUITANSI PEMBAYARAN"
+        text_width = pdf.stringWidth(text, "Helvetica-Bold", 14)
+        pdf.drawString((width - text_width) / 2, y_pos - 15, text)
+        
+        # Reset color to black for rest of content
+        pdf.setFillColor(Color(0, 0, 0))
+        y_pos -= 45
+
+        # Border for kuitansi number
+        pdf.setStrokeColor(Color(0.2, 0.4, 0.6))
+        pdf.rect(50, y_pos - 25, width - 100, 25, fill=False, stroke=True)
+        
+        # No. Kuitansi inside border
+        pdf.setFont("Helvetica-Bold", 12)
+        no_kuitansi_text = f"No. Kuitansi: {kuitansi.nomor_kuitansi}"
+        pdf.drawString(60, y_pos - 18, no_kuitansi_text)
+        y_pos -= 50
+
+        # Main content area
+        pdf.setFont("Helvetica", 11)
+        left_margin = 80
+        label_width = 140
+        
+        # Telah Diterima Dari
+        pdf.drawString(left_margin, y_pos, "Telah Diterima Dari")
+        pdf.drawString(left_margin + label_width, y_pos, f": {kuitansi.nama}")
+        y_pos -= 25
+        
+        # Tanggal Pembayaran
+        pdf.drawString(left_margin, y_pos, "Tanggal Pembayaran")
+        pdf.drawString(left_margin + label_width, y_pos, f": {format_date_indonesian(kuitansi.tanggal)}")
+        y_pos -= 25
+        
+        # Jumlah Pembayaran
+        pdf.drawString(left_margin, y_pos, "Jumlah Pembayaran")
+        pdf.setFont("Helvetica-Bold", 11)
+        pdf.setFillColor(Color(0.8, 0, 0))  # Red color for amount
+        pdf.drawString(left_margin + label_width, y_pos, f": {format_currency(kuitansi.jumlah)}")
+        pdf.setFillColor(Color(0, 0, 0))  # Reset to black
+        y_pos -= 25
+        
+        # Terbilang
+        pdf.setFont("Helvetica", 11)
+        pdf.drawString(left_margin, y_pos, "Terbilang")
+        
+        terbilang_text = f": {kuitansi.terbilang} Rupiah"
+        # Word wrap for terbilang_text
+        lines_terbilang = []
+        words_terbilang = terbilang_text.split()
+        current_line_terbilang = ""
+        max_width = width - left_margin - label_width - 60
+        
+        for word in words_terbilang:
+            test_line = current_line_terbilang + " " + word if current_line_terbilang else word
+            if pdf.stringWidth(test_line, "Helvetica", 11) < max_width:
+                current_line_terbilang = test_line
+            else:
+                if current_line_terbilang:
+                    lines_terbilang.append(current_line_terbilang)
+                current_line_terbilang = word
+        if current_line_terbilang:
+            lines_terbilang.append(current_line_terbilang)
+
+        for i, line in enumerate(lines_terbilang):
+            x_pos = left_margin + label_width if i == 0 else left_margin + label_width
+            pdf.drawString(x_pos, y_pos, line)
+            y_pos -= 18
+        y_pos -= 7  # Extra spacing after terbilang
+        
+        # Untuk Pembayaran
+        pdf.drawString(left_margin, y_pos, "Untuk Pembayaran")
+        
+        desc_text = f": {kuitansi.deskripsi}"
+        # Word wrap for desc_text
+        lines_desc = []
+        words_desc = desc_text.split()
+        current_line_desc = ""
+        
+        for word in words_desc:
+            test_line = current_line_desc + " " + word if current_line_desc else word
+            if pdf.stringWidth(test_line, "Helvetica", 11) < max_width:
+                current_line_desc = test_line
+            else:
+                if current_line_desc:
+                    lines_desc.append(current_line_desc)
+                current_line_desc = word
+        if current_line_desc:
+            lines_desc.append(current_line_desc)
+
+        for i, line in enumerate(lines_desc):
+            x_pos = left_margin + label_width if i == 0 else left_margin + label_width
+            pdf.drawString(x_pos, y_pos, line)
+            y_pos -= 18
+        y_pos -= 20
+
+        # Total box (similar to image)
+        pdf.setStrokeColor(Color(0, 0, 0))
+        pdf.rect(50, y_pos - 30, width - 100, 30, fill=False, stroke=True)
+        
+        pdf.setFont("Helvetica-Bold", 12)
+        total_text = f"TOTAL PEMBAYARAN: {format_currency(kuitansi.jumlah)}"
+        total_width = pdf.stringWidth(total_text, "Helvetica-Bold", 12)
+        pdf.drawString((width - total_width) / 2, y_pos - 20, total_text)
+        y_pos -= 60
+
+        # Signature area - only "Petugas" (right side)
         now = datetime.now()
-        current_date_formatted = format_date_indonesian(now)
-        current_time = now.strftime('%H:%M:%S WIB')
+        right_margin = width - 80
         
-        pdf.cell(0, 6, f"Dokumen ini dicetak oleh: {current_user.nama}", ln=True, align='L')
-        pdf.cell(0, 6, f"Tanggal cetak: {current_date_formatted} pukul {current_time}", ln=True, align='L')
-        pdf.cell(0, 6, f"Sistem: Aplikasi Kuitansi Digital PT. Telkom Indonesia", ln=True, align='L')
+        # Date and City
+        date_city_text = f"Makassar, {format_date_indonesian(now)}"
+        date_city_width = pdf.stringWidth(date_city_text, "Helvetica", 11)
+        pdf.drawString(right_margin - date_city_width, y_pos, date_city_text)
+        y_pos -= 25
+        
+        # Get the user who created the kuitansi
+        creator_user = User.query.get(kuitansi.id_user)
+        creator_name = creator_user.nama if creator_user else "Unknown User"
+        
+        # Petugas label
+        pdf.setFont("Helvetica", 11)
+        petugas_label = "Yang Menerima,"
+        petugas_label_width = pdf.stringWidth(petugas_label, "Helvetica", 11)
+        pdf.drawString(right_margin - petugas_label_width, y_pos, petugas_label)
+        y_pos -= 60  # Space for signature
+        
+        # # Signature line for petugas
+        # line_width = 150
+        # pdf.line(right_margin - line_width, y_pos, right_margin, y_pos)
+        # y_pos -= 15
+        
+        # Name of the Petugas (who created the kuitansi)
+        pdf.setFont("Helvetica", 11)
+        petugas_name = f"{creator_name}"
+        petugas_name_width = pdf.stringWidth(petugas_name, "Helvetica", 11)
+        pdf.drawString(right_margin - petugas_name_width, y_pos, petugas_name)
 
-        # Signature section dengan layout yang lebih compact - DIPERBAIKI
-        pdf.ln(8)  # Dikurangi dari 12 ke 8
-        pdf.set_text_color(0, 0, 0)
-        
-        # Cek posisi Y untuk memastikan tidak terlalu dekat dengan bottom
-        current_y = pdf.get_y()
-        if current_y > 230:  # Threshold dinaikkan untuk memberikan ruang lebih
-            pdf.add_page()
-            current_y = 30
-            pdf.set_y(current_y)
-        
-        # Two column layout untuk signatures dengan jarak yang lebih rapat
-        pdf.set_font("Arial", '', 11)
-        
-        # Tanggal dan lokasi di kanan atas
-        pdf.set_xy(120, current_y)
-        pdf.cell(70, 6, f"Bandung, {format_date_indonesian(now)}", 0, 1, 'C')
-        
-        # Spacing minimal antara tanggal dan label signature
-        pdf.ln(2)
-        
-        # Baris signature dalam satu level Y yang sama
-        signature_label_y = pdf.get_y()
-        
-        # Left column - Penerima
-        pdf.set_xy(30, signature_label_y)
-        pdf.cell(70, 6, "Penerima,", 0, 0, 'C')
-        
-        # Right column - Petugas (di posisi Y yang sama)
-        pdf.set_xy(120, signature_label_y)
-        pdf.cell(70, 6, "Petugas,", 0, 0, 'C')
-        
-        # Ruang untuk tanda tangan - dikurangi jarak
-        pdf.ln(15)  # Dikurangi dari 18 ke 15
-        signature_line_y = pdf.get_y()
-        
-        # Garis signature di kedua kolom pada Y yang sama
-        pdf.set_xy(30, signature_line_y)
-        pdf.cell(70, 6, "(_________________________)", 0, 0, 'C')
-        
-        pdf.set_xy(120, signature_line_y)
-        pdf.cell(70, 6, "(_________________________)", 0, 0, 'C')
-        
-        # Nama di bawah garis signature dengan jarak minimal
-        pdf.ln(8)  # Dikurangi dari 10 ke 8
-        name_y = pdf.get_y()
-        
-        pdf.set_xy(30, name_y)
-        pdf.cell(70, 6, kuitansi.nama, 0, 0, 'C')
-        
-        pdf.set_xy(120, name_y)
-        pdf.cell(70, 6, current_user.nama, 0, 0, 'C')
+        # Footer information
+        footer_y_start = 120
+        pdf.setFont("Helvetica", 8)
+        pdf.setFillColor(Color(0.5, 0.5, 0.5))  # Grey color for footer
 
-        # Footer dengan jarak yang proporsional
-        pdf.ln(8)  # Dikurangi dari 10 ke 8
-        pdf.set_font("Arial", 'I', 8)
-        pdf.set_text_color(150, 150, 150)
-        pdf.cell(0, 4, "Dokumen ini dibuat secara elektronik dan sah tanpa tanda tangan basah.", ln=True, align='C')
-        pdf.cell(0, 4, f"Kode Validasi: {kuitansi.nomor_kuitansi}-{now.strftime('%Y%m%d')}", ln=True, align='C')
+        # Left side footer info
+        pdf.drawString(60, footer_y_start, f"Dokumen ini dicetak oleh: {current_user.nama}")
+        pdf.drawString(60, footer_y_start - 12, f"Tanggal cetak: {datetime.now().strftime('%d %B %Y pukul %H:%M:%S')} WITA")
+        pdf.drawString(60, footer_y_start - 24, "Sistem: Aplikasi Kuitansi Digital PT. Telkom Indonesia (Persero) Tbk.")
+        
+        # Bottom center - document validity note
+        validity_text = "Dokumen ini dibuat secara elektronik dan sah tanpa tanda tangan basah."
+        validity_width = pdf.stringWidth(validity_text, "Helvetica", 8)
+        pdf.drawString((width - validity_width) / 2, footer_y_start - 50, validity_text)
 
-        # Add page border
-        pdf.set_draw_color(200, 200, 200)
-        pdf.rect(10, 10, 190, 277)
+        # Validation code at bottom center
+        pdf.setFont("Helvetica-Bold", 8)
+        pdf.setFillColor(Color(0.3, 0.3, 0.3))
+        validation_code_date = kuitansi.tanggal.strftime('%Y%m%d')
+        validation_text = f"Kode Validasi: {kuitansi.nomor_kuitansi}-{validation_code_date}"
+        validation_width = pdf.stringWidth(validation_text, "Helvetica-Bold", 8)
+        pdf.drawString((width - validation_width) / 2, 30, validation_text)
 
-        # Generate PDF output
-        pdf_output = pdf.output(dest='S').encode('latin1')
-        buffer = BytesIO(pdf_output)
+        # Finalize PDF
+        pdf.save()
         buffer.seek(0)
 
         return send_file(
