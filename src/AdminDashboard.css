@@ -1,10 +1,17 @@
+/* di file AdminDashboard.css atau CSS utama Anda */
+
 .dashboard-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh; /* Kunci: Batasi tinggi container utama setinggi layar */
 }
 
 .main-content {
-  flex: 1;
-  padding: 2rem;
-  background-color: #f5f5f5;
+  margin-left: 250px; /* Tetap pertahankan ini karena sidebar Anda fixed */
+  width: 100%;
+
+  /* --- GANTI DAN TAMBAHKAN INI --- */
+  height: 100vh; /* Buat tingginya juga setinggi layar */
+  overflow-y: auto; /* PENTING: Scrollbar hanya akan muncul di area ini jika kontennya panjang */
+  padding: 2rem; /* Beri padding agar konten tidak mepet ke tepi */
+  box-sizing: border-box; /* PENTING: Agar padding tidak menambah tinggi/lebar elemen */
 }

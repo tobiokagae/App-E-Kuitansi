@@ -20,6 +20,8 @@
 }
 
 .login-left h1 {
+  font-weight: 900;
+  color: #ffffff;
   margin-top: 30px;
   margin-bottom: 15px;
   font-size: 65px;
@@ -51,7 +53,7 @@
 }
 
 .sub-title {
-  color: #5C5C5C;
+  color: #999999;
   margin-top: 35px;
   margin-bottom: 15px;
 }
@@ -66,6 +68,7 @@
   width: 350px;
   box-sizing: border-box;
   margin-bottom: 15px;
+  color: #000;
 }
 
 .login-input-password {
@@ -76,13 +79,14 @@
   font-size: 14px;
   width: 350px;
   box-sizing: border-box;
+  color: #000;
 }
 
 .login-input-email:focus,
 .login-input-password:focus {
   border-color: #0777E0;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(26, 90, 151, 0.2);
+  box-shadow: 0 0 0 2px rgba(244, 244, 244, 0.2);
 }
 
 .login-input-email::placeholder,

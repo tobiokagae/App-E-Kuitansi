@@ -1,24 +1,45 @@
-.icon {
-  width: 20px;
-  height: 20px;
+/* Sidebar.css */
+/* Tambahkan ini di paling atas Sidebar.css atau file CSS utama Anda */
+body {
+  margin: 0;
+  font-family: sans-serif; /* Opsional: Atur font default */
 }
 
+/* Sidebar.css */
+
+/* Sidebar.css */
+
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  
+  /* --- PERBAIKAN DI BAWAH INI --- */
+
+  /* 1. Gunakan 'dvh' bukan 'vh' untuk tinggi yang dinamis & akurat */
+  height: 100dvh; 
+
+  /* 2. Ganti 'hidden' menjadi 'auto' agar bisa di-scroll JIKA perlu */
+  overflow-y: auto; 
+
+  /* 3. Tambahkan box-sizing agar padding tidak menambah tinggi */
+  box-sizing: border-box;
+
+  /* --- Properti yang sudah ada (tidak perlu diubah) --- */
   background-color: #0C3866;
-  color: white;
   width: 250px;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
 }
 
 .sidebar h2 {
-  font-size: 2rem;
+  color: white;
+  font-size: 30px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  margin-top: 3rem;
 }
 
 .sidebar ul {
@@ -27,33 +48,58 @@
   margin: 0;
 }
 
-.sidebar li {
+/* KITA TIDAK LAGI MEMBERI STYLE PADA <li>, TAPI LANGSUNG PADA LINK <a> */
+.sidebar li a {
+  color: #bdc3c7; /* Warna tulisan default untuk semua item (abu-abu muda) */
+  text-decoration: none; /* Menghilangkan garis bawah dari link */
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  cursor: pointer;
   border-radius: 8px;
-  transition: background 0.3s;
+  transition: background-color 0.3s, color 0.3s; /* Tambahkan transisi untuk warna */
 }
 
-.sidebar li:hover,
-.sidebar li.active {
+/* Style saat mouse hover di atas link manapun */
+.sidebar li a:hover {
   background-color: #154a80;
+  color: #ffffff; /* Ubah juga warna tulisan menjadi putih saat hover */
 }
 
-.logout {
+/* Style HANYA untuk link yang sedang aktif */
+.sidebar li a.active {
+  background-color: #154a80; /* Latar belakang lebih gelap untuk item aktif */
+  color: #ffffff; /* Warna tulisan putih terang untuk item aktif */
+  font-weight: bold; /* Tulisan menjadi tebal saat aktif */
+}
+
+.sidebar .icon {
+  width: 20px;
+  height: 20px;
+  /* Pastikan ikon juga ikut berubah warna jika formatnya SVG */
+  /* filter: invert(1); */
+}
+
+/* Pindahkan .logout ke dalam .sidebar untuk spesifisitas */
+/* Ganti blok CSS logout Anda dengan yang ini */
+
+.sidebar a.logout {
+  /* Style untuk layout dan posisi */
+  margin-top: auto; /* Tetap mendorong ke bawah */
+  
+  /* Style untuk tampilan tombol */
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: auto;
+  border-radius: 8px;
+  transition: background-color 0.3s;
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+.sidebar a.logout:hover {
+  background-color: #154a80;
 }

@@ -6,9 +6,9 @@
   gap: 1.5rem;
 }
 
-.kuitansi-wrapper h1 {
+h1 {
   color: #000;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -54,7 +54,7 @@
   background: transparent;
   outline: none;
   font-size: 14px;
-  color: #8B8B8B;
+  color: #000000;
   font-family: 'Poppins', sans-serif;
   flex-grow: 1;
   margin-left: 0.5rem;
@@ -125,59 +125,65 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 5px;
 }
 
-
-
-/* === Modal Konfirmasi === */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+/* === PERBAIKI BAGIAN INI === */
+/* Ganti .table-wrapper Anda dengan ini untuk membuatnya menjadi kartu putih */
+.table-wrapper {
+  background-color: white; /* Memberi latar belakang putih */
+  border-radius: 10px; /* Membuat sudutnya melengkung */
+  padding: 1rem; /* Memberi jarak di dalam kartu */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Memberi bayangan halus */
+  overflow-x: auto; /* Agar tabel bisa di-scroll horizontal jika layarnya kecil */
+  margin-top: 1rem; /* Memberi jarak dari filter di atasnya */
 }
 
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  text-align: center;
-  min-width: 300px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+/* Ganti .table Anda dengan ini agar ada jarak antar baris */
+.table {
+  width: 100%;
+  border-collapse: separate; /* Kunci untuk menggunakan border-spacing */
+  border-spacing: 0 10px;  /* Memberi jarak vertikal antar baris */
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
+.table th, .table td {
+  padding: 0.75rem 1rem; /* Sedikit penyesuaian padding agar lebih rapi */
+  text-align: left;
+  border: none; /* Hapus semua border default */
+  background-color: #f9f9f9; /* Beri warna latar sedikit abu-abu pada setiap baris */
+  font-size: 14px;
+  color: #2e2e2e;
+  font-weight: 600;
 }
 
-.modal-buttons button {
-  padding: 8px 16px;
+.table th {
+    background-color:#e9e9e9; /* Header tidak perlu background */
+    font-weight: 700;
+}
+
+.table td button {
+  display: inline-flex;
+  background: none;
   border: none;
-  border-radius: 8px;
+  padding: 4px;
   cursor: pointer;
+  background-color: transparent; /* Beri warna latar sedikit abu-abu pada setiap baris */
 }
 
-.modal-buttons button:first-child {
-  background-color: #dc3545;
-  color: white;
+/* Membuat baris pertama dan terakhir memiliki sudut melengkung */
+.table tr td:first-child, .table tr th:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.table tr td:last-child, .table tr th:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
-.modal-buttons button:first-child:hover {
-  background-color: #b02a37;
+/* Untuk mengganti latar belakang dropdown paginasi */
+.pagination-container .dropdown {
+background-color: white;
+color: #333;
 }
 
-.modal-buttons button:last-child {
-  background-color: #6c757d;
-  color: white;
-}
-
-.modal-buttons button:last-child:hover {
-  background-color: #5a6268;
+.pagination-container .dropdown:focus {
+outline: none;
+border-color: #0777E0;
 }

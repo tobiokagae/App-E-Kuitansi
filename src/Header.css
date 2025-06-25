@@ -5,8 +5,7 @@
   align-items: center;
   background-color: #F9F9F9;
   padding: 1rem 3rem;
-  border-radius: 0.375rem 0.375rem 0 0;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   width: 100%;
 }
@@ -14,23 +13,28 @@
 /* Judul halaman */
 .header-title {
   font-size: 1.9rem;
-  font-weight: bold;
-  color: #FF0000;
+  font-weight:900;
+  color: #26649e;
+  margin: 0; /* Menghilangkan margin default dari h1 */
 }
 
-/* Wrapper untuk user bubble + dropdown */
-.user-bubble-wrapper {
-  position: relative;
-}
-
-/* Bubble user (nama + tombol dropdown) */
-.user-bubble {
+/* Wrapper baru untuk menampung info user dan tombol logout */
+.user-actions-wrapper {
   display: flex;
   align-items: center;
+  gap: 2rem; /* Memberi jarak antara bubble user dan tombol logout */
+}
+
+/* Bubble user (nama + role) */
+.user-bubble {
+  display: flex;
+  width: 200px;
+  height: 30px;
+  align-items: center;
   background-color: #EAF4FD;
-  border: 1px solid #CCCCCC;
-  border-radius: 9999px;
-  padding: 0.5rem 1rem;
+  border: 1px solid #BEE1FB;
+  border-radius: 9999px; /* Membuatnya menjadi pil */
+  padding: 0.5rem 30px;
   gap: 0.75rem;
 }
 
@@ -38,6 +42,7 @@
 .user-info {
   display: flex;
   flex-direction: column;
+  text-align: left; /* Agar teks rata kanan */
 }
 
 .user-name {
@@ -48,5 +53,26 @@
 
 .user-role {
   font-size: 0.75rem;
-  color: #404040;
+  color: #555;
+}
+
+/* Gaya untuk Logout yang terlihat seperti Link */
+.logout-link {
+  /* Reset semua gaya default yang mungkin ada */
+  background: transparent;
+  border: none;
+  padding: 0;
+  
+  /* Menata ikon dan teks */
+  display: flex;
+  align-items: center;
+  
+  cursor: pointer;
+  text-decoration: none; /* Hapus garis bawah default dari link agar bisa diatur di span */
+}
+
+/* Gaya untuk ikon di dalam link logout */
+.logout-link .logout-icon {
+  width: 30px;
+  height: 30px;
 }

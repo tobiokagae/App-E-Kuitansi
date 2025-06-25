@@ -1,0 +1,328 @@
+/* =================================
+    GAYA UNTUK HALAMAN ISE DASHBOARD
+    ================================= */
+
+/* Layout utama: Header di atas, konten di bawah */
+.ise-dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Konten utama di bawah header */
+.ise-dashboard-content {
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Area Aksi & Filter - Disesuaikan untuk menempatkan tombol di kanan */
+.ise-dashboard-content .page-actions {
+  display: flex;
+  justify-content: space-between; /* Untuk memisahkan filter dan tombol */
+  align-items: center;
+}
+
+.ise-dashboard-content .filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ise-dashboard-content .input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid #0777e0;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+  padding: 0.5rem 1rem;
+  gap: 0.75rem;
+}
+
+.ise-dashboard-content .input-wrapper input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  width: 240px;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Styling untuk tombol Tambah Kuitansi */
+.ise-dashboard-content .add-receipt-button {
+  background-color: #0777e0; /* Warna biru */
+  color: white;
+  border: none;
+  border-radius: 10px; /* Sudut melengkung */
+  padding: 0.75rem 1.5rem;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* Mencegah teks patah baris */
+}
+
+.ise-dashboard-content .add-receipt-button:hover {
+  background-color: #055bb5; /* Sedikit lebih gelap saat dihover */
+}
+
+
+/* Kontainer Tabel (Menjadi Kartu Putih) */
+.ise-dashboard-content .table-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+/* Tabel dengan Jarak Antar Baris */
+.ise-dashboard-content .data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.ise-dashboard-content .data-table th,
+.ise-dashboard-content .data-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: none;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #323c47;
+  font-weight: 600;
+}
+
+.ise-dashboard-content .data-table th {
+  background-color: #eaeaea;
+  font-weight: bold;
+  color: #000000;
+}
+
+/* Sudut melengkung untuk sel tabel */
+.ise-dashboard-content .data-table tr td:first-child,
+.ise-dashboard-content .data-table tr th:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.ise-dashboard-content .data-table tr td:last-child,
+.ise-dashboard-content .data-table tr th:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+
+/* Paginasi */
+.ise-dashboard-content .pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ise-dashboard-content .pagination-container p {
+  color: #535353;
+  font-weight: normal;
+}
+
+.ise-dashboard-content .pagination-container .dropdown {
+  padding: 0.3rem;
+  border: 2px solid #a6a6a6;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #535353;
+  background-color: white;
+}
+
+.ise-dashboard-content .pagination-container .button-page button {
+  border: none;
+  outline: none;
+  padding: 0 0.5rem;
+  background: none;
+  cursor: pointer;
+}
+
+/* =================================
+   GAYA UNTUK HALAMAN ISE DASHBOARD
+   ================================= */
+
+/* ... (semua gaya sebelumnya dari .ise-dashboard-layout hingga .pagination-container tetap sama) ... */
+
+/* =================================
+   GAYA MODAL BARU SESUAI DESAIN
+   ================================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(250, 250, 250); /* Sedikit lebih gelap untuk kontras */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content.add-receipt-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px; /* Sesuai desain */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 500px; /* Lebar modal disesuaikan */
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Tombol Close 'X' di pojok kanan atas */
+.close-modal-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.close-modal-button:hover {
+  color: #333;
+}
+
+.modal-content.add-receipt-modal h2 {
+  font-family: 'Poppins', sans-serif; /* Font yang lebih modern seperti di desain */
+  font-size: 24px;
+  font-weight: 700; /* Bold */
+  color: #000000;
+  margin-top: 0;
+  margin-bottom: 2rem; /* Jarak dari judul ke form */
+  text-align: left; /* Rata kiri */
+}
+
+/* Layout utama form: Label di kiri, input di kanan */
+.modal-content.add-receipt-modal .form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem; /* Jarak antar baris form */
+  gap: 1rem;
+}
+
+.modal-content.add-receipt-modal .form-group label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+  flex-basis: 120px; /* Lebar tetap untuk semua label */
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.modal-content.add-receipt-modal .form-group input,
+.modal-content.add-receipt-modal .form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #D9D9D9; /* Border abu-abu halus */
+  border-radius: 8px; /* Sudut melengkung */
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #f6f6f6;
+}
+
+.modal-content.add-receipt-modal .form-group input:focus,
+.modal-content.add-receipt-modal .form-group textarea:focus {
+  outline: none;
+  border-color: #0777E0; /* Border biru saat aktif */
+  box-shadow: 0 0 0 3px rgba(7, 119, 224, 0.1);
+}
+
+.modal-content.add-receipt-modal .form-group input::placeholder,
+.modal-content.add-receipt-modal .form-group textarea::placeholder {
+  color: #A9A9A9;
+}
+
+/* Override untuk field deskripsi (label di atas) */
+.form-group.form-group-vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem; /* Jarak antara label dan textarea */
+}
+
+.modal-content.add-receipt-modal .form-group.form-group-vertical textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Tombol Aksi di Bawah Form */
+.modal-buttons.form-buttons {
+  display: flex;
+  justify-content: flex-end; /* Tombol di pojok kanan */
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-buttons.form-buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+/* Tombol Bersihkan - Merah */
+.modal-buttons.form-buttons .clear-button {
+  background-color: #FFEDED; /* Background merah sangat muda */
+  color: #D32F2F; /* Teks merah gelap */
+}
+
+.modal-buttons.form-buttons .clear-button:hover {
+  background-color: #FFE1E1;
+  /* transform: translateY(-2px); */
+}
+
+/* Tombol Simpan - Hijau */
+.modal-buttons.form-buttons .save-button {
+  background-color: #30B455; /* Warna hijau sesuai desain */
+  color: white;
+}
+
+.modal-buttons.form-buttons .save-button:hover {
+  background-color: #289E4A;
+  /* transform: translateY(-2px); */
+}
+
+.modal-buttons.form-buttons button img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hilangkan panah pada input number */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -30,10 +30,9 @@ function Login() {
       {/* Bagian Kiri */}
       <div className="login-left">
         <p className="welcome-text">Selamat datang di</p>
-        <h1 className="font-bold">LOREM IPSUM</h1>
+        <h1 className="font-bold">E-Kuitansi</h1>
         <p className="description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-          incididunt ut labore et dolore magna aliqua.
+          Solusi cerdas untuk semua kebutuhan kuitansi Anda. Kelola, lacak, dan arsipkan kuitansi dengan mudah dan aman bersama E-Kuitansi.
         </p>
       </div>
 
