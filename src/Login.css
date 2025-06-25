@@ -1,0 +1,138 @@
+/* ====== Layout Utama ====== */
+.login-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  height: 100vh;
+  background-color: #F9F9F9;
+}
+
+/* ====== Bagian Kiri ====== */
+.login-left {
+  background-color: #1A5A97; /* Tailwind's blue-800 */
+  color: white;
+  padding-left: 100px;
+  padding-right: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+
+.login-left h1 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 65px;
+}
+
+.welcome-text {
+  margin: 0;
+  font-size: 35px;
+}
+
+.description {
+  font-size: 15px;
+  margin: 0;
+}
+
+/* ====== Bagian Kanan ====== */
+.login-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  width: 100%;
+}
+
+.login-right h1 {
+  color: #0777E0;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.sub-title {
+  color: #5C5C5C;
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+/* ====== Input Form ====== */
+.login-input-email {
+  padding: 0.75rem 1rem 0.75rem 1rem; /* kanan lebih besar utk icon */
+  border-radius: 20px;
+  border: 2px solid #0777E0;
+  background-color: #F2F2F2;
+  font-size: 14px;
+  width: 350px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.login-input-password {
+  padding: 0.75rem 3rem 0.75rem 1rem; /* kanan lebih besar utk icon */
+  border-radius: 20px;
+  border: 2px solid #0777E0;
+  background-color: #F2F2F2;
+  font-size: 14px;
+  width: 350px;
+  box-sizing: border-box;
+}
+
+.login-input-email:focus,
+.login-input-password:focus {
+  border-color: #0777E0;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(26, 90, 151, 0.2);
+}
+
+.login-input-email::placeholder,
+.login-input-password::placeholder {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #8B8B8B;
+}
+
+/* ====== Password dengan Icon Mata ====== */
+.password-input-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ====== Tombol Login ====== */
+.button-login-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.login-button {
+  background-color: #0777E0;
+  color: white;
+  padding: 0.68rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: none;
+  width: 220px; 
+  font-weight: 650;
+}
+
+.login-button:hover {
+  background-color: #0066E0; /* Tailwind's blue-700 */
+}
+
+.login-button:focus {
+  outline: none;
+}

@@ -1,0 +1,52 @@
+/* Container utama header */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F9F9F9;
+  padding: 1rem 3rem;
+  border-radius: 0.375rem 0.375rem 0 0;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Judul halaman */
+.header-title {
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #FF0000;
+}
+
+/* Wrapper untuk user bubble + dropdown */
+.user-bubble-wrapper {
+  position: relative;
+}
+
+/* Bubble user (nama + tombol dropdown) */
+.user-bubble {
+  display: flex;
+  align-items: center;
+  background-color: #EAF4FD;
+  border: 1px solid #CCCCCC;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  gap: 0.75rem;
+}
+
+/* Info user: nama dan role tersusun vertikal */
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #404040;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: #404040;
+}
