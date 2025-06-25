@@ -206,6 +206,7 @@ def login():
                 "message": f"Selamat Datang {user.nama}!",
                 "token": token,
                 "user": {
+                    "id_user": user.id_user, # <--- BARIS INI DITAMBAHKAN
                     "nama": user.nama,
                     "email_nik": user.email_nik,
                     "role": user.role.value
