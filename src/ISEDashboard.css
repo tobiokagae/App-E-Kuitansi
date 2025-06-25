@@ -70,7 +70,6 @@
   background-color: #055bb5; /* Sedikit lebih gelap saat dihover */
 }
 
-
 /* Kontainer Tabel (Menjadi Kartu Putih) */
 .ise-dashboard-content .table-container {
   background-color: white;
@@ -106,7 +105,7 @@
 
 /* Sudut melengkung untuk sel tabel */
 .ise-dashboard-content .data-table tr td:first-child,
-.ise-dashboard-content .data-table tr th:first-child {
+.ise-dashboard-content .data-dashboard-content .data-table tr th:first-child {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
@@ -116,6 +115,18 @@
   border-bottom-right-radius: 8px;
 }
 
+/* ADDED: Styles for the action buttons inside the table data cells */
+/* This is crucial to remove the default button background */
+.ise-dashboard-content .data-table td button {
+  background: none; /* Make button background transparent */
+  border: none; /* Remove any default button border */
+  padding: 0; /* Remove default button padding */
+  cursor: pointer;
+  display: inline-flex; /* Use flex to align image if needed */
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px; /* Add some spacing between buttons if multiple actions */
+}
 
 /* Paginasi */
 .ise-dashboard-content .pagination-container {
@@ -143,15 +154,9 @@
   border: none;
   outline: none;
   padding: 0 0.5rem;
-  background: none;
+  background: none; /* Ensure background is none for pagination buttons */
   cursor: pointer;
 }
-
-/* =================================
-   GAYA UNTUK HALAMAN ISE DASHBOARD
-   ================================= */
-
-/* ... (semua gaya sebelumnya dari .ise-dashboard-layout hingga .pagination-container tetap sama) ... */
 
 /* =================================
    GAYA MODAL BARU SESUAI DESAIN
@@ -201,7 +206,7 @@
 }
 
 .modal-content.add-receipt-modal h2 {
-  font-family: 'Poppins', sans-serif; /* Font yang lebih modern seperti di desain */
+  font-family: "Poppins", sans-serif; /* Font yang lebih modern seperti di desain */
   font-size: 24px;
   font-weight: 700; /* Bold */
   color: #000000;
@@ -219,7 +224,7 @@
 }
 
 .modal-content.add-receipt-modal .form-group label {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   color: #333;
   font-weight: 600;
@@ -232,9 +237,9 @@
 .modal-content.add-receipt-modal .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #D9D9D9; /* Border abu-abu halus */
+  border: 1px solid #d9d9d9; /* Border abu-abu halus */
   border-radius: 8px; /* Sudut melengkung */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   color: #333;
   box-sizing: border-box;
@@ -245,13 +250,13 @@
 .modal-content.add-receipt-modal .form-group input:focus,
 .modal-content.add-receipt-modal .form-group textarea:focus {
   outline: none;
-  border-color: #0777E0; /* Border biru saat aktif */
+  border-color: #0777e0; /* Border biru saat aktif */
   box-shadow: 0 0 0 3px rgba(7, 119, 224, 0.1);
 }
 
 .modal-content.add-receipt-modal .form-group input::placeholder,
 .modal-content.add-receipt-modal .form-group textarea::placeholder {
-  color: #A9A9A9;
+  color: #a9a9a9;
 }
 
 /* Override untuk field deskripsi (label di atas) */
@@ -282,7 +287,7 @@
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -292,23 +297,23 @@
 
 /* Tombol Bersihkan - Merah */
 .modal-buttons.form-buttons .clear-button {
-  background-color: #FFEDED; /* Background merah sangat muda */
-  color: #D32F2F; /* Teks merah gelap */
+  background-color: #ffeded; /* Background merah sangat muda */
+  color: #d32f2f; /* Teks merah gelap */
 }
 
 .modal-buttons.form-buttons .clear-button:hover {
-  background-color: #FFE1E1;
+  background-color: #ffe1e1;
   /* transform: translateY(-2px); */
 }
 
 /* Tombol Simpan - Hijau */
 .modal-buttons.form-buttons .save-button {
-  background-color: #30B455; /* Warna hijau sesuai desain */
+  background-color: #30b455; /* Warna hijau sesuai desain */
   color: white;
 }
 
 .modal-buttons.form-buttons .save-button:hover {
-  background-color: #289E4A;
+  background-color: #289e4a;
   /* transform: translateY(-2px); */
 }
 
@@ -318,11 +323,19 @@
 }
 
 /* Hilangkan panah pada input number */
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Styling for error messages */
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
 }

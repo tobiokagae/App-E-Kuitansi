@@ -22,7 +22,7 @@ h1 {
 .input-wrapper-search2 {
   display: flex;
   align-items: center;
-  border: 2px solid #0777E0;
+  border: 2px solid #0777e0;
   border-radius: 10px;
   background-color: #f7f7f7;
   padding: 0.5rem 1rem;
@@ -35,8 +35,8 @@ h1 {
   background: transparent;
   outline: none;
   font-size: 14px;
-  color: #8B8B8B;
-  font-family: 'Poppins', sans-serif;
+  color: #8b8b8b;
+  font-family: "Poppins", sans-serif;
   flex-grow: 2;
 }
 
@@ -46,7 +46,7 @@ h1 {
 }
 
 .pengguna-actions button {
-  background-color: #0777E0;
+  background-color: #0777e0;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
@@ -66,7 +66,6 @@ h1 {
 
 /* ... (biarkan style untuk .dashboard-container, .main-content, .pengguna-actions, dll.) ... */
 
-
 /* ================================================= */
 /* === GANTI ATAU TAMBAHKAN BLOK DI BAWAH INI === */
 /* ================================================= */
@@ -76,7 +75,7 @@ h1 {
   background-color: white;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow-x: auto;
 }
 
@@ -88,7 +87,7 @@ h1 {
 }
 
 /* Table - Mengatur tampilan sel dan header */
-.table-wrapper2 .table th, 
+.table-wrapper2 .table th,
 .table-wrapper2 .table td {
   padding: 0.75rem 1rem;
   text-align: left;
@@ -103,15 +102,15 @@ h1 {
 }
 
 /* Table - Membuat sudut sel melengkung */
-.table-wrapper2 .table tr td:first-child, 
+.table-wrapper2 .table tr td:first-child,
 .table-wrapper2 .table tr th:first-child {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
-.table-wrapper2 .table tr td:last-child, 
+.table-wrapper2 .table tr td:last-child,
 .table-wrapper2 .table tr th:last-child {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 /* Table - Tombol aksi di dalam sel */
@@ -124,7 +123,7 @@ h1 {
   border-radius: 50%;
 }
 .table-wrapper2 .table td button:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 /* GANTI SEMUA BLOK CSS MODAL ANDA DENGAN INI */
@@ -199,7 +198,7 @@ h1 {
   border: 1px solid #ccc;
   background-color: #ffffff;
   color: #000;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
 }
@@ -207,7 +206,7 @@ h1 {
 .form-grid input:focus,
 .form-grid select:focus {
   outline: none;
-  border-color: #0777E0;
+  border-color: #0777e0;
   box-shadow: 0 0 0 2px rgba(7, 119, 224, 0.2);
 }
 
@@ -257,22 +256,85 @@ h1 {
 
 /* Tombol Aksi Sekunder (Hapus Isian - Warna Merah Muda) */
 .modal-buttons .button-secondary {
-  background-color: #F8D7DA;
-  color: #C82333;
-  border: 1px solid #F8D7DA; 
+  background-color: #f8d7da;
+  color: #c82333;
+  border: 1px solid #f8d7da;
 }
 .modal-buttons .button-secondary:hover {
-  background-color: #EAAAB2;
-  border: 1px solid #EAAAB2;
+  background-color: #eaaab2;
+  border: 1px solid #eaaab2;
 }
 
-/* Untuk mengganti latar belakang dropdown paginasi */
+.pagination-container {
+  display: flex;
+  justify-content: flex-end; /* Memindahkan pagination ke kanan */
+  align-items: center;
+  gap: 1.5rem; /* Jarak antar elemen utama di pagination (dropdown, button-page) */
+  margin-top: 2rem; /* Jarak dari tabel di atasnya */
+  padding: 0 1rem; /* Sedikit padding agar tidak terlalu mepet ke tepi container parent */
+}
+
+.pagination-container .information {
+  color: #535353;
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+
 .pagination-container .dropdown {
-background-color: white;
-color: #333;
+  padding: 0.5rem 0.75rem; /* Padding yang lebih baik */
+  border: 1px solid #a6a6a6; /* Border yang konsisten */
+  border-radius: 8px; /* Sudut melengkung */
+  font-size: 0.9rem;
+  color: #535353;
+  background-color: white;
+  min-width: 70px; /* Lebar minimum agar tidak terlalu sempit */
+  cursor: pointer; /* Menunjukkan bahwa ini dapat diklik */
 }
 
 .pagination-container .dropdown:focus {
-outline: none;
-border-color: #0777E0;
+  outline: none;
+  border-color: #0777e0;
+}
+
+.pagination-container .button-page {
+  display: flex; /* Aktifkan flexbox untuk menata tombol dan nomor halaman */
+  align-items: center; /* Pusatkan secara vertikal */
+  gap: 0.75rem; /* Jarak antara tombol panah dan nomor halaman */
+}
+
+.pagination-container .button-page button {
+  border: none;
+  outline: none;
+  padding: 0.4rem 0.6rem; /* Sedikit padding untuk tombol panah */
+  background: none; /* Hilangkan background default */
+  cursor: pointer;
+  display: flex; /* Agar ikon terpusat */
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, opacity 0.2s ease; /* Transisi halus */
+  border-radius: 4px; /* Sudut sedikit melengkung untuk tombol */
+}
+
+.pagination-container .button-page button:hover:not(:disabled) {
+  background-color: #e0e0e0; /* Efek hover ringan */
+}
+
+.pagination-container .button-page button:disabled {
+  opacity: 0.4; /* Kurangi opasitas jika dinonaktifkan */
+  cursor: not-allowed;
+}
+
+.pagination-container .button-page img {
+  width: 20px; /* Ukuran ikon panah */
+  height: 20px;
+}
+
+/* Style khusus untuk teks nomor halaman (contoh: "1 / 5") */
+.pagination-container .button-page p {
+  margin: 0; /* Hapus margin default p */
+  font-size: 0.95rem; /* Ukuran font sedikit lebih besar */
+  color: #333; /* Warna teks yang jelas */
+  font-weight: 600; /* Sedikit tebal */
+  min-width: 50px; /* Lebar minimum agar tidak berantakan jika angka berubah */
+  text-align: center; /* Pusatkan teks nomor halaman */
 }
