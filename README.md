@@ -37,7 +37,7 @@ App E-Kuitansi adalah sistem manajemen kuitansi digital yang komprehensif, diran
 ┌─────────────────────────────────────────────────────────────┐
 │                    FRONTEND (React.js)                      │
 ├─────────────────────────────────────────────────────────────┤
-│  • React Router DOM    • SweetAlert2    • CSS Styling      │
+│  • React Router DOM    • SweetAlert2    • CSS Styling       │
 │  • Dashboard Components    • Authentication    • Forms      │
 └─────────────────────────┬───────────────────────────────────┘
                           │ HTTP/REST API
