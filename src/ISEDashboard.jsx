@@ -8,8 +8,8 @@ import searchIcon from "./assets/search_icon.png";
 import calendarIcon from "./assets/calendar_icon.png";
 import buttonNext from "./assets/next-button.png";
 import buttonPrevious from "./assets/previous-button.png";
-import buttonEdit from "./assets/button_edit.png";
-import buttonDownload from "./assets/button_download.png";
+// import buttonEdit from "./assets/button_edit.png"; // Tidak digunakan lagi
+// import buttonDownload from "./assets/button_download.png"; // Tidak digunakan lagi
 
 import clearIcon from "./assets/button_delete2.png";
 import saveIcon from "./assets/button_save.png";
@@ -174,6 +174,8 @@ export default function IseDashboard() {
     setShowAddReceiptModal(true);
   };
 
+  // Fungsi ini tidak akan lagi terpanggil jika tombolnya dihapus.
+  // Tapi tetap disimpan jika ada logika lain yang memanggilnya.
   const handleEditReceipt = (kuitansi) => {
     if (userRole === "ISE" && kuitansi.id_user !== currentUserId) {
       Swal.fire(
@@ -303,6 +305,8 @@ export default function IseDashboard() {
     }
   };
 
+  // Fungsi ini tidak akan lagi terpanggil jika tombolnya dihapus.
+  // Tapi tetap disimpan jika ada logika lain yang memanggilnya.
   const handleDownload = async (kuitansiId, nomorKuitansi) => {
     const kuitansiToDownload = kuitansiList.find(
       (k) => k.id_kuitansi === kuitansiId
@@ -454,7 +458,8 @@ export default function IseDashboard() {
                 <th>Jumlah (Rp)</th>
                 <th>Terbilang</th>
                 <th>Deskripsi</th>
-                <th>Aksi</th>
+                {/* Kolom Aksi DIHAPUS dari header */}
+                {/* <th>Aksi</th> */}
               </tr>
             </thead>
             <tbody>
@@ -467,7 +472,15 @@ export default function IseDashboard() {
                     <td>Rp {data.jumlah.toLocaleString("id-ID")}</td>
                     <td>{data.terbilang}</td>
                     <td>{data.deskripsi}</td>
-                    <td>
+                    {/* Sel Aksi DIHAPUS dari setiap baris */}
+                    {/* Karena Anda bilang "Hapus baris aksi",
+                       ini berarti semua tombol aksi tidak akan ditampilkan di sini.
+                       Jika Anda hanya ingin menyembunyikan header tapi tetap menampilkan tombol,
+                       maka bagian <td> di atas harus dikembalikan.
+                       Namun, berdasarkan permintaan "Hapus bari aksi disini karena saya tidak pakai",
+                       saya menghapus sel <td> ini.
+                    */}
+                    {/* <td>
                       {userRole === "ISE" && data.id_user === currentUserId && (
                         <button onClick={() => handleEditReceipt(data)}>
                           <img
@@ -498,13 +511,14 @@ export default function IseDashboard() {
                           />
                         </button>
                       )}
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (
                 <tr>
+                  {/* colSpan disesuaikan menjadi 6 karena ada 6 kolom data tersisa */}
                   <td
-                    colSpan="7"
+                    colSpan="6"
                     style={{ textAlign: "center", padding: "20px" }}
                   >
                     Tidak ada data kuitansi yang ditemukan.
